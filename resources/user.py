@@ -4,10 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 import uuid
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 from db import db
 from models.user import Users
-from models.tasks import Tasks
+from models.tasks import Task
 from functools import wraps
 from resources.decorator import token_required
 
@@ -117,7 +117,6 @@ class UsersDetails(Resource):
 
     @token_required
     def get(self, curr_user):
-        users = Users.query.all()
 
         output = []
         for user in users:

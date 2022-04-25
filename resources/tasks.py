@@ -10,24 +10,24 @@ import jwt
 from datetime import datetime, timedelta
 from db import db
 from models.user import Users
-from models.tasks import Tasks
+from models.tasks import Task
 from functools import wraps
 from resources.decorator import token_required
 
 
 def getUserOrder(userId):
-    tasks = Tasks.query.filter_by(user_id=userId)
+    tasks = Task.query.filter_by(user_id=userId)
     order = 0
     for i in tasks:
         order += 1
     return order
 
 
-class Todos(Resource):
+class TodoClass(Resource):
 
     @token_required
     def get(self, curr_user):
-        all_tasks = Tasks.query.filter_by(user_id=curr_user['public_id'])
+        all_tasks = Task.query.filter_by(user_id=curr_user['public_id'])
         if all_tasks is None:
             return make_response(jsonify({'status': 'No Task Found'}), 200)
         else:
@@ -48,10 +48,10 @@ class Todos(Resource):
                 return make_response(jsonify({'error': 'Access Not Allowed'}), 401)
             user_order = getUserOrder(curr_user['public_id'])
             date_today = datetime.date.today()
-            task = Tasks(title=json['title'], description=json['description'], user_id=json['user_id'],
-                         completed=json['completed'], initial_date=date_today,
-                         last_date=date_today + datetime.timedelta(days=json["number_of_days"]), user_order=user_order,
-                         last_update=date_today, deleted=None)
+            task = Task(title=json['title'], description=json['description'], user_id=json['user_id'],
+                        completed=json['completed'], initial_date=date_today,
+                        last_date=date_today + datetime.timedelta(days=json["number_of_days"]), user_order=user_order,
+                        last_update=date_today, deleted=None)
             db.session.add(task)
             try:
                 db.session.commit()
@@ -74,7 +74,7 @@ class Todos(Resource):
                 return make_response(jsonify({'error': 'Access Not Allowed'}), 401)
             user = json['user_id']
             taskid = json['id']
-            temp = Tasks.query.filter_by(user_id=user).filter_by(id=taskid).first()
+            temp = Task.query.filter_by(user_id=user).filter_by(id=taskid).first()
             temp.title = json['title']
             temp.description = json['description']
             temp.completed = json['completed']
@@ -101,8 +101,8 @@ class Todos(Resource):
                 return make_response(jsonify({'error': 'Access Not Allowed'}), 401)
             user = json['user_id']
             taskid = json['id']
-            temp = Tasks.query.filter_by(user_id=user).filter_by(id=taskid).first()
-            temp.deleted = datetime.date.today()
+            temp = Task.query.filter_by(user_id=user).filter_by(id=taskid).first()
+            temp.deleted = date.today()
             temp.user_order = 0
             try:
                 db.session.commit()

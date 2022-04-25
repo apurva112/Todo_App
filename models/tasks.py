@@ -1,11 +1,11 @@
 from app import db
 
 
-class Tasks(db.Model):
+class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.String, nullable=False)
     completed = db.Column(db.Boolean)
     initial_date = db.Column(db.Date, nullable=False)
     last_date = db.Column(db.Date)
