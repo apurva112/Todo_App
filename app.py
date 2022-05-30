@@ -15,7 +15,7 @@ from resources.tasks import TodoClass
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Cab2001@localhost/sql_demo'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://hpfzdzpolnvfbe:97575946dfc02283cdcc3dbb42eef04ff1d106093b1f711152601b70190d3f7a@ec2-99-80-170-190.eu-west-1.compute.amazonaws.com:5432/d7gjioccn9kn50'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db.init_app(app)
 api = Api(app)
