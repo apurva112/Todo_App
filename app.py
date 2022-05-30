@@ -57,4 +57,4 @@ api.add_resource(TodoClass, '/tasks')
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=3000, debug=True)
