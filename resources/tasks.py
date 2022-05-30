@@ -15,19 +15,11 @@ from functools import wraps
 from resources.decorator import token_required
 
 
-def getUserOrder(userId):
-    tasks = Task.query.filter_by(user_id=userId)
-    order = 0
-    for i in tasks:
-        order += 1
-    return order
-
-
 class TodoClass(Resource):
+    # method_decorators = [token_required]
 
-    @token_required
-    def get(self, curr_user):
-        all_tasks = Task.query.filter_by(user_id=curr_user['public_id'])
+    def get(self, *args, **kwargs):
+        all_tasks = Task.query.filter_by(user_id=curr_user.public_id)
         if all_tasks is None:
             return make_response(jsonify({'status': 'No Task Found'}), 200)
         else:
@@ -40,11 +32,12 @@ class TodoClass(Resource):
         return make_response(jsonify(result), 200)
 
     @token_required
-    def post(self, curr_user):
+    def post(self, curr_user, *args, **kwargs):
         content = request.headers.get('Content-Type')
+        print(curr_user)
         if content == 'application/json':
             json = request.get_json()
-            if json['user_id'] != curr_user['public_id']:
+            if json['user_id'] != curr_user.public_id:
                 return make_response(jsonify({'error': 'Access Not Allowed'}), 401)
             user_order = getUserOrder(curr_user['public_id'])
             date_today = datetime.date.today()
@@ -65,8 +58,7 @@ class TodoClass(Resource):
         else:
             return make_response(jsonify({"status": "Content Type not Supported"}), 200)
 
-    @token_required
-    def patch(self, curr_user):
+    def patch(self, *args, **kwargs):
         content = request.headers.get('Content-Type')
         if content == 'application/json':
             json = request.get_json()
@@ -92,8 +84,7 @@ class TodoClass(Resource):
         else:
             return make_response(jsonify({"status": "Content Type not Supported"}), 200)
 
-    @token_required
-    def delete(self, curr_user):
+    def delete(self, *args, **kwargs):
         content = request.headers.get('Content-Type')
         if content == 'application/json':
             json = request.get_json()

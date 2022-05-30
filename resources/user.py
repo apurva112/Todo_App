@@ -117,7 +117,7 @@ class UsersDetails(Resource):
 
     @token_required
     def get(self, curr_user):
-
+        users = Users.query.all()
         output = []
         for user in users:
             output.append({

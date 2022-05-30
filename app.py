@@ -28,7 +28,6 @@ with app.app_context():
 @app.route('/', methods=["GET"])
 def hello_world():  # put application's code here
     # users = Users.query.all()
-
     date_today = date.today()
     task = Task(title='Task 3', description="Complete Task 3", user_id="972ea6f9-8957-4b35-a05e-27cb33b22dcd",
                 completed=False, initial_date=date_today,
@@ -43,6 +42,8 @@ def hello_world():  # put application's code here
     # finally:
     #     db.session.close()
     return make_response(jsonify({"status": "Done"}))
+
+
 
 
 api.add_resource(UserRegister, '/register')
